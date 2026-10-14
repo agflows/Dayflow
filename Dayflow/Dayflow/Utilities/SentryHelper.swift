@@ -24,6 +24,7 @@ final class Breadcrumb {
   var level: SentryLevel
   var category: String
   var message: String?
+  var type: String?
   var data: [String: Any]?
 
   init(level: SentryLevel, category: String) {

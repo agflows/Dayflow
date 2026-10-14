@@ -41,27 +41,6 @@ final class UpdaterManager: NSObject, ObservableObject {
   private override init() {
     super.init()
     statusText = "Update checks are off. This build does not contact the network."
-    return
-
-    // Print what Sparkle thinks the settings are *before* starting:
-    print("[Sparkle] bundleId=\(Bundle.main.bundleIdentifier ?? "nil")")
-    print(
-      "[Sparkle] Info SUFeedURL = \(Bundle.main.object(forInfoDictionaryKey: "SUFeedURL") ?? "nil")"
-    )
-    print(
-      "[Sparkle] Info SUPublicEDKey = \(Bundle.main.object(forInfoDictionaryKey: "SUPublicEDKey") ?? "nil")"
-    )
-
-    do {
-      try updater.start()
-      print("[Sparkle] updater.start() OK")
-      print("[Sparkle] feedURL=\(updater.feedURL?.absoluteString ?? "nil")")
-      print("[Sparkle] autoChecks=\(updater.automaticallyChecksForUpdates)")
-      print("[Sparkle] autoDownloads=\(updater.automaticallyDownloadsUpdates)")
-      print("[Sparkle] interval=\(Int(updater.updateCheckInterval))")
-    } catch {
-      print("[Sparkle] updater.start() FAILED: \(error)")
-    }
   }
 
   func checkForUpdates(showUI: Bool = false) {
@@ -69,22 +48,6 @@ final class UpdaterManager: NSObject, ObservableObject {
     isChecking = false
     updateAvailable = false
     statusText = "Update checks are off. This build does not contact the network."
-    return
-    isChecking = true
-    statusText = "Checking…"
-    track(
-      "sparkle_check_triggered",
-      [
-        "mode": showUI ? "manual" : "background"
-      ])
-    if showUI {
-      // Start UI controller on demand so it can present prompts as needed
-      interactiveController.startUpdater()
-      interactiveController.checkForUpdates(nil)
-    } else {
-      // Trigger a background check immediately; the scheduler will also keep running
-      updater.checkForUpdatesInBackground()
-    }
   }
 }
 
